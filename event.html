@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limpieza de Playa - EcoAcción</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+    crossorigin=""/>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>🌱 EcoAcción</h1>
+    <button id="menu-toggle" class="menu-toggle">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav id="main-nav">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="profile.html">Mi Perfil</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="event-detail">
+    <img src="https://via.placeholder.com/800x400?text=Limpieza+de+Playa" alt="Evento" class="event-image">
+    <div class="event-content">
+      <h2>Limpieza de Playa</h2>
+      <p class="date">📅 15 Octubre 2024 | 🕒 9:00 AM</p>
+      <p class="location">📍 Playa Azul, Ciudad de México</p>
+      <div class="map-container" id="event-map"></div>
+      <p class="description">
+        ¡Únete a la limpieza de Playa Azul! Recolectaremos plásticos y residuos no biodegradables. 
+        <strong>Requisitos:</strong> Guantes, cubrebocas y ropa cómoda.
+      </p>
+      <button id="join-btn" class="btn-primary">¡Quiero Participar!</button>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+    crossorigin=""></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Menú hamburguesa
+      document.getElementById('menu-toggle')?.addEventListener('click', function() {
+        document.getElementById('main-nav').classList.toggle('active');
+      });
+
+      // Mapa del evento
+      if (document.getElementById('event-map')) {
+        const map = L.map('event-map').setView([19.4326, -99.1332], 15);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        L.marker([19.4326, -99.1332])
+          .addTo(map)
+          .bindPopup("Punto de encuentro");
+
+        // Fix para redimensionamiento
+        setTimeout(() => map.invalidateSize(), 100);
+        window.addEventListener('resize', () => map.invalidateSize());
+      }
+    });
+  </script>
+</body>
+</html>
