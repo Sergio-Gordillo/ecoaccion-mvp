@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Perfil - Natuaction</title>
+  <title>Mi Perfil - EcoAcción</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header>
-    <h1>🌱 Natuaction</h1>
-    <button id="menu-toggle" class="menu-toggle">
+    <h1>🌱 EcoAcción</h1>
+    <button id="menu-toggle" class="menu-toggle" aria-label="Menú">
       <i class="fas fa-bars"></i>
     </button>
     <nav id="main-nav">
@@ -23,41 +23,121 @@
 
   <main class="profile">
     <section class="user-card">
-      <img src="christopher-campbell-rDEOVtE7vOs-unsplash.jpg" alt="Foto de perfil" class="avatar">
+      <img src="img/avatar.jpg" alt="Foto de perfil" class="avatar">
       <h2>Ana López</h2>
       <p>🌍 Ciudad de México</p>
-      <p>🌟 120 Puntos Eco</p>
+      <p>🌟 150 Puntos Eco</p>
+      <button id="share-profile-btn" class="share-btn">
+        <i class="fas fa-share-alt"></i> Compartir perfil
+      </button>
+    </section>
+
+    <section class="stats-section">
+      <h3>Mi Impacto Ambiental</h3>
+      <div class="stats-container">
+        <div class="stat-card">
+          <span class="stat-icon">🌳</span>
+          <h4>Árboles Plantados</h4>
+          <p class="stat-value" id="trees-planted">15</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🗑️</span>
+          <h4>Kg de Basura</h4>
+          <p class="stat-value" id="trash-collected">92</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">⏱️</span>
+          <h4>Horas Voluntariado</h4>
+          <p class="stat-value" id="volunteer-hours">32</p>
+        </div>
+      </div>
     </section>
 
     <section class="badges-section">
-      <h3>Mis Insignias</h3>
+      <div class="section-header">
+        <h3>Mis Insignias</h3>
+        <span id="progress-text">(4/5 para próxima)</span>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar" id="badge-progress"></div>
+      </div>
       <div class="badges-container">
-        <div class="badge">
+        <div class="badge" data-tooltip="3+ eventos completados">
           <span>🌿</span>
           <p>EcoAmiga</p>
         </div>
-        <div class="badge">
+        <div class="badge" data-tooltip="1 mes reciclando">
           <span>♻️</span>
           <p>Recicladora</p>
         </div>
+        <div class="badge" data-tooltip="5+ eventos liderados">
+          <span>⭐</span>
+          <p>Líder Verde</p>
+        </div>
+        <div class="badge" data-tooltip="10+ horas voluntariado">
+          <span>👥</span>
+          <p>Colaboradora</p>
+        </div>
+      </div>
+      <div class="share-buttons">
+        <button class="share-btn twitter" data-network="twitter">
+          <i class="fab fa-twitter"></i> Twitter
+        </button>
+        <button class="share-btn facebook" data-network="facebook">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </button>
       </div>
     </section>
 
     <section class="events-history">
       <h3>Mis Eventos</h3>
-      <ul>
-        <li>Limpieza de Playa - 15/10/2024</li>
-        <li>Reforestación Parque Central - 20/11/2024</li>
-      </ul>
+      <div class="event-gallery">
+        <div class="event-card">
+          <h4>Limpieza Playa <span>15/10/2024</span></h4>
+          <div class="event-photos">
+            <img src="img/event1.jpg" alt="Voluntarios en playa">
+            <img src="img/event2.jpg" alt="Basura recolectada">
+          </div>
+          <p class="event-impact">🗑️ 12kg recogidos</p>
+          <button class="btn-testimonial">
+            <i class="fas fa-comment"></i> Dejar testimonio
+          </button>
+        </div>
+        <div class="event-card">
+          <h4>Reforestación <span>20/11/2024</span></h4>
+          <div class="event-photos">
+            <img src="img/event3.jpg" alt="Plantando árboles">
+            <img src="img/event4.jpg" alt="Equipo trabajando">
+          </div>
+          <p class="event-impact">🌱 8 árboles plantados</p>
+          <button class="btn-testimonial">
+            <i class="fas fa-comment"></i> Dejar testimonio
+          </button>
+        </div>
+      </div>
     </section>
   </main>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('menu-toggle')?.addEventListener('click', function() {
-        document.getElementById('main-nav').classList.toggle('active');
-      });
-    });
-  </script>
+  <!-- Modal Compartir -->
+  <div id="share-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>Compartir mis logros</h3>
+      <p id="share-text">¡He contribuido con 15 árboles plantados y 92kg de basura recolectada a través de EcoAcción! 🌍 #EcoAcción</p>
+      <div class="social-buttons">
+        <a href="#" id="share-twitter" class="social-btn twitter">
+          <i class="fab fa-twitter"></i> Twitter
+        </a>
+        <a href="#" id="share-fb" class="social-btn facebook">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </a>
+        <a href="#" id="share-wa" class="social-btn whatsapp">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/profile.js"></script>
 </body>
 </html>

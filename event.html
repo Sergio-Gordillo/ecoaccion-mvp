@@ -3,17 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Limpieza de Playa - Natuaction</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+  <title>Detalle de Evento - EcoAcción</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Estilos personalizados -->
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    #event-map { 
+      height: 400px;
+      width: 100%;
+      border-radius: 8px;
+      margin: 1rem 0;
+      z-index: 1;
+    }
+    .leaflet-container {
+      background: #f8f9fa !important;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>🌱 Natuaction</h1>
-    <button id="menu-toggle" class="menu-toggle">
+    <h1>🌱 EcoAcción</h1>
+    <button id="menu-toggle" class="menu-toggle" aria-label="Menú">
       <i class="fas fa-bars"></i>
     </button>
     <nav id="main-nav">
@@ -24,46 +39,125 @@
     </nav>
   </header>
 
-  <main class="event-detail">
-    <div class="event-content">
+  <main class="container">
+    <article class="event-detail">
       <h2>Limpieza de Playa</h2>
-      <p class="date">📅 15 Octubre 2024 | 🕒 9:00 AM</p>
-      <p class="location">📍 Playa Azul, Ciudad de México</p>
-      <div class="map-container" id="event-map"></div>
-      <p class="description">
-        ¡Únete a la limpieza de Playa Azul! Recolectaremos plásticos y residuos no biodegradables. 
-        <strong>Requisitos:</strong> Guantes, cubrebocas y ropa cómoda.
-      </p>
-      <button id="join-btn" class="btn-primary">¡Quiero Participar!</button>
-    </div>
+      
+      <img src="img/beach-cleanup.jpg" alt="Limpieza de playa" class="event-main-image">
+      
+      <div class="event-meta-container">
+        <div class="event-meta-card">
+          <div class="meta-item">
+            <i class="far fa-calendar-alt"></i>
+            <div>
+              <span class="meta-label">Fecha</span>
+              <span class="meta-value">15 Octubre 2024</span>
+            </div>
+          </div>
+          
+          <div class="meta-item">
+            <i class="far fa-clock"></i>
+            <div>
+              <span class="meta-label">Hora</span>
+              <span class="meta-value">9:00 AM - 12:00 PM</span>
+            </div>
+          </div>
+          
+          <div class="meta-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <span class="meta-label">Lugar</span>
+              <span class="meta-value">Playa Azul, Ciudad de México</span>
+            </div>
+          </div>
+          
+          <div class="meta-item">
+            <i class="fas fa-users"></i>
+            <div>
+              <span class="meta-label">Participantes</span>
+              <span class="meta-value">25 registrados</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="event-content">
+        <h3><i class="fas fa-info-circle"></i> Descripción</h3>
+        <p>Únete a nuestra jornada de limpieza de playa donde recolectaremos plásticos y otros residuos no biodegradables. Esta actividad ayuda a proteger el ecosistema marino y mantener nuestras playas limpias.</p>
+        
+        <h3><i class="fas fa-map-marked-alt"></i> Ubicación</h3>
+        <div id="event-map"></div>
+        
+        <h3><i class="fas fa-clipboard-list"></i> Requisitos</h3>
+        <ul class="requirements-list">
+          <li><i class="fas fa-check"></i> Ropa cómoda y calzado cerrado</li>
+          <li><i class="fas fa-check"></i> Bloqueador solar</li>
+          <li><i class="fas fa-check"></i> Gorra o sombrero</li>
+          <li><i class="fas fa-check"></i> Guantes (opcional, nosotros proveemos)</li>
+          <li><i class="fas fa-check"></i> Termo con agua</li>
+        </ul>
+        
+        <div class="action-buttons">
+          <button id="join-event" class="btn-primary">
+            <i class="fas fa-user-plus"></i> Unirme al evento
+          </button>
+          <button id="share-event" class="btn-secondary">
+            <i class="fas fa-share-alt"></i> Compartir evento
+          </button>
+        </div>
+      </div>
+    </article>
   </main>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
+  
+  <!-- JavaScript para el evento -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Configuración del mapa
+      const eventLocation = [19.4326, -99.1332];
+      const map = L.map('event-map').setView(eventLocation, 15);
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+      
+      L.marker(eventLocation)
+        .addTo(map)
+        .bindPopup("<b>Punto de encuentro</b><br>Playa Azul")
+        .openPopup();
+      
+      setTimeout(() => map.invalidateSize(), 100);
+      
       // Menú hamburguesa
-      document.getElementById('menu-toggle')?.addEventListener('click', function() {
-        document.getElementById('main-nav').classList.toggle('active');
-      });
-
-      // Mapa del evento
-      if (document.getElementById('event-map')) {
-        const map = L.map('event-map').setView([19.4326, -99.1332], 15);
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap'
-        }).addTo(map);
-
-        L.marker([19.4326, -99.1332])
-          .addTo(map)
-          .bindPopup("Punto de encuentro");
-
-        // Fix para redimensionamiento
-        setTimeout(() => map.invalidateSize(), 100);
-        window.addEventListener('resize', () => map.invalidateSize());
+      const menuToggle = document.getElementById('menu-toggle');
+      const mainNav = document.getElementById('main-nav');
+      if (menuToggle && mainNav) {
+        menuToggle.addEventListener('click', () => {
+          mainNav.classList.toggle('active');
+        });
       }
+      
+      // Interacciones
+      document.getElementById('join-event').addEventListener('click', () => {
+        alert("¡Registro exitoso! Te esperamos en el evento.");
+      });
+      
+      document.getElementById('share-event').addEventListener('click', () => {
+        const shareUrl = window.location.href;
+        if (navigator.share) {
+          navigator.share({
+            title: 'Limpieza de Playa - EcoAcción',
+            text: 'Únete a este evento de limpieza ambiental',
+            url: shareUrl
+          });
+        } else {
+          prompt("Comparte este evento copiando el enlace:", shareUrl);
+        }
+      });
     });
   </script>
 </body>
